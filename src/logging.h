@@ -5,6 +5,6 @@
 
 void log_setstream(FILE *stream);
 
-void info(const char *fmt, ...);
+void log_info(const char *fmt, ...);
 
 #endif

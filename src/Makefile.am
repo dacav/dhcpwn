@@ -1,2 +1,2 @@
 bin_PROGRAMS = dhcpwn
-dhcpwn_SOURCES = main.c logging.c
+dhcpwn_SOURCES = dhcpwn.c logging.c

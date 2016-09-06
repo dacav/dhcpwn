@@ -9,7 +9,7 @@ void log_setstream(FILE *stream)
     LOG_FILE = stream;
 }
 
-void info(const char *fmt, ...)
+void log_info(const char *fmt, ...)
 {
     if (LOG_FILE == NULL) return;
 
