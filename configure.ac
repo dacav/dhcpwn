@@ -7,16 +7,20 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_SRCDIR([src/dhcpwn.c])
 AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_FILES([
- Makefile
- src/Makefile
+    Makefile
+    src/Makefile
 ])
 
 # Checks for programs.
 AC_PROG_CC
 
 # Checks for libraries.
+AC_CHECK_LIB([pcap], [pcap_create])
 
 # Checks for header files.
+AC_CHECK_HEADERS([pcap/pcap.h], [],
+    AC_MSG_ERROR([Cannot find libpcap headers])
+)
 
 # Checks for typedefs, structures, and compiler characteristics.
 
