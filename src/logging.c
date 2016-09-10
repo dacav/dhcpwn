@@ -15,6 +15,7 @@ static void log_core(const char *fmt, va_list args)
 {
     if (LOG_FILE == NULL) return;
     vfprintf(LOG_FILE, fmt, args);
+    fputc('\n', LOG_FILE);
 }
 
 void log_debug(const char *fmt, ...)
@@ -30,6 +31,16 @@ void log_debug(const char *fmt, ...)
 void log_info(const char *fmt, ...)
 {
     if (LEVEL > LOG_INFO) return;
+
+    va_list ap;
+    va_start(ap, fmt);
+    log_core(fmt, ap);
+    va_end(ap);
+}
+
+void log_error(const char *fmt, ...)
+{
+    if (LEVEL > LOG_ERROR) return;
 
     va_list ap;
     va_start(ap, fmt);
