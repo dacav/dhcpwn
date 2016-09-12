@@ -11,9 +11,10 @@ configure
 depcomp
 install-sh
 missing
-src/.deps/
-src/Makefile
-src/Makefile.in
-src/config.h
-src/dhcpwn
-src/stamp-h1
+.deps/
+Makefile
+Makefile.in
+dhcpwn/config.h
+dhcpwn/dhcpwn
+stamp-h1
+*~
