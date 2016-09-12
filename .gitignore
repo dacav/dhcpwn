@@ -18,9 +18,6 @@ dhcpwn/config.h
 dhcpwn/dhcpwn
 stamp-h1
 *~
-Makefile
-Makefile.am
-Makefile.in
 
 tests/test-repr
 tests/test-repr.log
