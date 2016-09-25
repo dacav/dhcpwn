@@ -23,3 +23,7 @@ tests/test-repr
 tests/test-repr.log
 tests/*.trs
 tests/*.log
+
+dhcpwn/.dirstamp
+
+*swp

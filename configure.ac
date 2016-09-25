@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.69])
 AC_INIT([dhcpwn], [0.0.1], [dacav@openmailbox.org])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_SRCDIR([dhcpwn/dhcpwn.c])
 AC_CONFIG_HEADERS([dhcpwn/config.h])
 AC_CONFIG_FILES([
