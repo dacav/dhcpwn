@@ -1,5 +1,6 @@
 #include "simplecap.h"
 #include "logging.h"
+#include "repr.h"
 
 pcap_t * spcap_new(const char *device)
 {
@@ -71,4 +72,23 @@ pcap_t * spcap_new(const char *device)
     }
 
     return handler;
+}
+
+int spcap_macfilter(pcap_t *pcap, const uint8_t *macaddr, size_t addrlen)
+{
+    struct bpf_program fp;
+    int result;
+    char *filter;
+
+    filter = repr_bytes(macaddr, addrlen, ":", "ether dst ", NULL);
+    log_debug("Compiling filter: '%s'", filter);
+    result = pcap_compile(pcap, &fp, filter, 1, PCAP_NETMASK_UNKNOWN);
+
+    if (result == -1) {
+        log_error("Cannot compile fiter '%s': %s", filter, pcap_geterr(pcap));
+    } else {
+        pcap_setfilter(pcap, &fp);
+        pcap_freecode(&fp);
+    }
+    free(filter);
 }
