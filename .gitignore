@@ -19,11 +19,4 @@ dhcpwn/dhcpwn
 stamp-h1
 *~
 
-tests/test-repr
-tests/test-repr.log
-tests/*.trs
-tests/*.log
-
-dhcpwn/.dirstamp
-
-*swp
+.*.swp
