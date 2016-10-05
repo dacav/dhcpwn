@@ -28,8 +28,9 @@ char * repr_bytes(const uint8_t *bytes, size_t len, const char *sep,
     out[size - 1] = '\0';
 
     unsigned offset = 0;
-    if (prefix)
+    if (prefix) {
         offset += sprintf(out + offset, "%s", prefix);
+    }
 
     if (len > 0) {
         offset += sprintf(out + offset, "%02x", bytes[0]);

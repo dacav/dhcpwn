@@ -2,7 +2,7 @@ check_PROGRAMS = test-repr test-rogueconf
 
 test_repr_SOURCES = \
 	../dhcpwn/repr.c \
-	test-repr.c 
+	test-repr.c
 
 test_rogueconf_SOURCES = \
 	../dhcpwn/rogue.c \

@@ -24,7 +24,7 @@ rogue_t rogue_new(const uint8_t *macaddr, size_t maclen)
     if (macaddr != NULL) {
         memcpy(out->macaddr, macaddr, maclen);
     } else {
-        random_bytes(out->macaddr, maclen);        
+        random_bytes(out->macaddr, maclen);
     }
     return out;
 
