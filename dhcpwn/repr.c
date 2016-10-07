@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdarg.h>
 
 #include "logging.h"
 
@@ -46,5 +47,26 @@ char * repr_bytes(const uint8_t *bytes, size_t len, const char *sep,
 
     assert(offset + 1 == size);
     assert(out[offset] == '\0');
+    return out;
+}
+
+char * repr_printf(const char *fmt, ...)
+{
+    char *out = NULL;
+    va_list ap;
+
+    va_start(ap, fmt);
+    const int size = vsnprintf(NULL, 0, fmt, ap) + 1;
+    va_end(ap);
+
+    if (size > 0) {
+        va_start(ap, fmt);
+        out = calloc(size, sizeof(char));
+        const int result = vsnprintf(out, size, fmt, ap);
+        assert(result == size - 1);
+        assert(out[size - 1] == '\0');
+        va_end(ap);
+    }
+
     return out;
 }
