@@ -2,6 +2,8 @@
 #include "logging.h"
 #include "repr.h"
 
+#include <assert.h>
+
 pcap_t * spcap_new(const char *device)
 {
     char errbuf[PCAP_ERRBUF_SIZE];
@@ -74,21 +76,47 @@ pcap_t * spcap_new(const char *device)
     return handler;
 }
 
-int spcap_macfilter(pcap_t *pcap, const uint8_t *macaddr, size_t addrlen)
+char * spcap_mkfilter_ether_dst(const uint8_t *macaddr, size_t addrlen)
 {
-    struct bpf_program fp;
-    int result;
-    char *filter;
+    return repr_bytes(macaddr, addrlen, ":", "ether dst ", NULL);
+}
 
-    filter = repr_bytes(macaddr, addrlen, ":", "ether dst ", NULL);
+char * spcap_mkfilter_and(char *filter1, char *filter2)
+{
+    return repr_printf("(%s) and (%s)", filter1, filter2);
+}
+
+char * spcap_mkfilter_proto_dst(spcap_proto_t proto, uint16_t port)
+{
+    const char *p = proto == SPCAP_PROTO_TCP ? "tcp" :
+                    proto == SPCAP_PROTO_UDP ? "udp" :
+                    NULL;
+
+    assert(p != NULL);
+    return repr_printf("%s dst port %d", p, port);
+}
+
+int spcap_setfilter(pcap_t *pcap, const char *filter)
+{
     log_debug("Compiling filter: '%s'", filter);
-    result = pcap_compile(pcap, &fp, filter, 1, PCAP_NETMASK_UNKNOWN);
+    struct bpf_program fp;
+    int result = pcap_compile(pcap, &fp, filter, 1, PCAP_NETMASK_UNKNOWN);
 
     if (result == -1) {
-        log_error("Cannot compile fiter '%s': %s", filter, pcap_geterr(pcap));
-    } else {
-        pcap_setfilter(pcap, &fp);
+        log_error("Cannot compile fiter '%s': %s",
+            filter,
+            pcap_geterr(pcap)
+        );
+    }
+    else {
+        result = pcap_setfilter(pcap, &fp);
+        if (result == -1) {
+            log_error("Cannot set (valid!) filter '%s': %s",
+                filter,
+                pcap_geterr(pcap)
+            );
+        }
         pcap_freecode(&fp);
     }
-    free(filter);
+    return result;
 }
