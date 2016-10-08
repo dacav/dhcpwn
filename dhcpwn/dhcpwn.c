@@ -8,6 +8,9 @@ int main(int argc, char **argv)
 {
     pcap_t *h = NULL;
     int status = EXIT_FAILURE;
+    char *f1 = NULL;
+    char *f2 = NULL;
+    char *f3 = NULL;
 
     log_setup(stderr, LOG_DEBUG);
     log_info("This is %s version %s\n", PACKAGE, VERSION);
@@ -22,11 +25,7 @@ int main(int argc, char **argv)
 
     log_info("Snapshot size: %d", pcap_snapshot(h));
 
-    char *f1 = NULL;
-    char *f2 = NULL;
-    char *f3 = NULL;
-
-    f1 = spcap_mkfilter_ether_dst("\x00\xde\xad\xbe\xef\x00", 6);
+    f1 = spcap_mkfilter_ether_dst((uint8_t *)"\x00\xde\xad\xbe\xef\x00", 6);
     log_info("f1=%s", f1);
     f2 = spcap_mkfilter_proto_dst(SPCAP_PROTO_UDP, 52);
     log_info("f2=%s", f2);

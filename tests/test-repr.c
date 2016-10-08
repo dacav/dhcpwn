@@ -6,7 +6,7 @@
 
 static void test_repr_bytes()
 {
-    const char bytes[] = {0xde, 0xad, 0xbe, 0xef};
+    const uint8_t bytes[] = {0xde, 0xad, 0xbe, 0xef};
     char * r;
 
     r = repr_bytes(bytes, sizeof(bytes), NULL, NULL, NULL);
