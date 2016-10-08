@@ -1,3 +1,4 @@
+AM_CFLAGS = -Wall -Werror
 check_PROGRAMS = test-repr test-rogueconf
 
 test_repr_SOURCES = \
