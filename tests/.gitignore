@@ -1,4 +1,4 @@
-test-repr
-test-rogueconf
+repr
+rogueconf
 *.trs
 *.log

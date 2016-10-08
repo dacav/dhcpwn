@@ -1,14 +1,14 @@
 AM_CFLAGS = -Wall -Werror
-check_PROGRAMS = test-repr test-rogueconf
+check_PROGRAMS = repr rogueconf
 
-test_repr_SOURCES = \
+repr_SOURCES = \
 	../dhcpwn/repr.c \
-	test-repr.c
+	repr.c
 
-test_rogueconf_SOURCES = \
+rogueconf_SOURCES = \
 	../dhcpwn/rogue.c \
 	../dhcpwn/util.c \
 	../dhcpwn/logging.c \
-	test-rogueconf.c
+	rogueconf.c
 
 TESTS = $(check_PROGRAMS)
