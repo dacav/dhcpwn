@@ -1,42 +1,50 @@
 #include "logging.h"
 #include "config.h"
-#include "simplecap.h"
+#include "rogue.h"
 
 #include <stdlib.h>
 
+#define DHCPWN_SETUP
+#include "const.h"
+#undef DHCPWN_SETUP
+
+static int setopt(int argc, char **argv);
+static int init();
+
 int main(int argc, char **argv)
 {
-    pcap_t *h = NULL;
     int status = EXIT_FAILURE;
-    char *f1 = NULL;
-    char *f2 = NULL;
-    char *f3 = NULL;
+    rogue_t rogue = NULL;
 
     log_setup(stderr, LOG_DEBUG);
     log_info("This is %s version %s\n", PACKAGE, VERSION);
 
-    if (argc < 2) {
-        log_error("Usage: %s <device> [options]", argv[0]);
-        goto exit;
-    }
+    if (setopt(argc, argv) == -1) goto exit;
+    if (init() == -1) goto exit;
 
-    h = spcap_new(argv[1]);
-    if (h == NULL) goto exit;
-
-    log_info("Snapshot size: %d", pcap_snapshot(h));
-
-    f1 = spcap_mkfilter_ether_dst((uint8_t *)"\x00\xde\xad\xbe\xef\x00", 6);
-    log_info("f1=%s", f1);
-    f2 = spcap_mkfilter_proto_dst(SPCAP_PROTO_UDP, 52);
-    log_info("f2=%s", f2);
-    f3 = spcap_mkfilter_and(f1, f2);
-    log_info("f3=%s", f3);
-    status = spcap_setfilter(h, f3) == -1 ? EXIT_FAILURE : EXIT_SUCCESS;
-
+    rogue = rogue_new_ethrnd();
 exit:
-    free(f1);
-    free(f2);
-    free(f3);
-    if (h != NULL) pcap_close(h);
+    rogue_del(rogue);
     exit(status);;
 }
+
+static int setopt(int argc, char **argv)
+{
+    if (argc < 2) {
+        log_error("Usage: %s <device> [options]", argv[0]);
+        return -1;
+    }
+
+    DHCPWN_Interface = argv[1];
+
+    return 0;
+}
+
+#include <time.h>
+
+static int init()
+{
+    srand(DHCPWN_RandomSeed == 0 ? time(NULL) : DHCPWN_RandomSeed);
+    return 0;
+}
+
