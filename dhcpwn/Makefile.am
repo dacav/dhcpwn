@@ -1,4 +1,4 @@
-AM_CFLAGS = -Wall -Werror
+AM_CFLAGS = -Wall -Werror -pthread
 
 bin_PROGRAMS = dhcpwn
 
